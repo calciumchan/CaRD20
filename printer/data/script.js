@@ -1,8 +1,15 @@
+/*----------------------------------------------------------------------------------------------------
 
+	VARIABLES
+
+----------------------------------------------------------------------------------------------------*/
 var cardnum = 0;
 
+/*----------------------------------------------------------------------------------------------------
 
+	CARD LOADERS
 
+----------------------------------------------------------------------------------------------------*/
 //LOADS CARD, TAKES SRC AS INPUT
 function loadcard(src){
 	//GET PREVIEW BAY
@@ -23,7 +30,7 @@ function loadcard(src){
 		//ADD CONTROLS
 		holder.appendChild(create_controls(cardnum));
 
-		//SET ID
+		//SET ID1
 
 		holder.id = "card_holder" + cardnum;
 		cardnum++;
@@ -33,10 +40,21 @@ function loadcard(src){
 	}
 }
 
+/*----------------------------------------------------------------------------------------------------
+
+	CARD CONTROLS
+
+----------------------------------------------------------------------------------------------------*/
 //CREATES CARD CONTROLS
 function create_controls(number){
 	//CONTROLS
 	let control_holder = document.createElement("div");
+
+	//CREATE CARD SELECTION BUTTON
+	let button_select = document.createElement("input");
+	button_select.type = "checkbox"
+
+	control_holder.appendChild(button_select);
 
 	//CREATE DELETION BUTTON
 	let button_delete = document.createElement("input");
@@ -45,6 +63,8 @@ function create_controls(number){
 	button_delete.onclick = function(){delete_card("card_holder" + number);};
 
 	control_holder.appendChild(button_delete);
+
+	control_holder.appendChild(document.createElement("br"));
 
 	//CREATE CARD COUNT BUTTONS
 	let button_count = document.createElement("input");
@@ -64,6 +84,11 @@ function delete_card(id){
 	document.getElementById(id).remove();
 }
 
+/*----------------------------------------------------------------------------------------------------
+
+	LOAD FILES
+
+----------------------------------------------------------------------------------------------------*/
 //GRABS FILES FROM INPUT
 function loadfrominput(inputid){
 	//GET INPUT
@@ -79,6 +104,11 @@ function loadfrominput(inputid){
 	}
 }
 
+/*----------------------------------------------------------------------------------------------------
+
+	CARD PRINTING
+
+----------------------------------------------------------------------------------------------------*/
 function printcards(){
 	//GET THE LIST OF CARDS
 	let cardstoprint = document.body.getElementsByClassName("previewcard");
@@ -133,7 +163,11 @@ function loadfiles(){
 }
 
 
-//OPENERS
+/*----------------------------------------------------------------------------------------------------
+
+	FLOATERS
+
+----------------------------------------------------------------------------------------------------*/
 function show_floater(id){
 	document.getElementById("floater_holder").style.display = "grid";
 	document.getElementById(id).style.display = "block";
@@ -157,5 +191,37 @@ function testsave(){
 	a.href = url;
 	a.download = "test"
 	document.body.appendChild(a);
+	a.click();
+}
+
+
+/*----------------------------------------------------------------------------------------------------
+
+	SAVE OUT TO JSON
+
+----------------------------------------------------------------------------------------------------*/
+function save_json(){
+	//LOOP THROUGH CARDS
+	let data = [];
+	let cardstosave = document.body.getElementsByClassName("previewcard");
+	for(let i = 0; i < cardstosave.length; i++){
+		//CONSTRUCT DATA
+		let inputdata = {};
+		inputdata["src"] = cardstosave[i].src;
+		
+		//LOAD INTO OUR OUTPUT DATA
+		data.push(inputdata);
+	}
+
+	//TEST
+	console.log(data);
+
+	//SAVE OUT
+	let file = new Blob([JSON.stringify(data,null,4)],{type:"text/plain"});
+	let url = URL.createObjectURL(file);
+	let a = document.createElement("a");
+	a.href = url;
+	a.download = "cards.txt";
+	//document.body.appendChild(a);
 	a.click();
 }

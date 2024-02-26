@@ -1,17 +1,17 @@
 :root{
-	--color-body-background:#331447;
+	--color-body-background:#3a3a3a;
 
-	--color-panel:#38343d;
-	--color-panel-border:#3d3741;
+	--color-panel:#535353;
+	--color-panel-border:#8d8d8d;
 
-	--color-button:rgb(143, 9, 148);
-	--color-button-text:rgb(184, 195, 230);
-	--color-button-hover:rgb(138, 97, 148);
+	--color-button:rgb(182, 182, 182);
+	--color-button-text:rgb(49, 49, 49);
+	--color-button-hover:rgb(206, 206, 206);
 
-	--color-previewbay:rgb(18, 8, 31);
+	--color-previewbay:rgb(43, 43, 43);
 
-	--color-cardholder:rgb(37, 20, 37);
-	--color-cardholder-hover:rgb(65, 34, 65);
+	--color-cardholder:rgb(59, 59, 59);
+	--color-cardholder-hover:rgb(85, 85, 85);
 }
 
 
@@ -76,6 +76,12 @@ body{
 	text-align: center;
 	border-radius: 0.5rem;
 	width: max-content;
+
+	overflow: scroll;
+
+	border-style: solid;
+	border-color: white;
+	border-width: 1px;
 
 	width: 100%;
 	height: 100%;
@@ -156,12 +162,14 @@ body{
 	background-color: var(--color-panel);
 	grid-area: controls;
 	text-align: center;
-	padding: .5rem;
+	padding: .25rem;
 	box-sizing: border-box;
 	width: max-content;
 	height: max-content;
 	border-radius: 1rem;
-	margin:.5rem;
+	margin:8px;
+
+	box-shadow: 0px 0px 8px black;
 
 	border-style: solid;
 	border-color:var(--color-panel-border);
@@ -179,10 +187,11 @@ body{
 
 	display: grid;
 	grid-template-areas:
-		"controls"
-		"previews"
+		"previews controls"
+		"previews controls"
 	;
-	grid-template-rows: max-content auto;
+	grid-template-rows: auto auto;
+	grid-template-columns: auto max-content;
 }
 
 #floater_holder{
@@ -193,7 +202,7 @@ body{
 	place-items: center;
 	width: 100%;
 	height: 100%;
-	background-color: rgba(0,0,10,0.75);
+	background-color: rgba(0,0,0,0.75);
 }
 
 .control_floating{
@@ -235,8 +244,12 @@ input{
 
 input:hover{
 	background-color: var(--color-button-hover);
-	color:white;
+	color:var(--color-button-text);
 	box-shadow: 0px 0px 4px lightblue;
+}
+
+input:disabled{
+	background-color: red;
 }
 
 .cardholder-type-file{
