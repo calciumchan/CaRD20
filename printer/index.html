@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" href="data/style.css">
+	<script src="data/script.js" defer></script>
+</head>
+<body>
+	<div id="printbay"></div>
+	<div id="main">
+		<div id="controls">
+			<input type="button" value="print" onclick="printcards()">
+			<input type="button" value="load from files" onclick="show_floater('upload files')">
+			<input type="button" value="load from URL" onclick="show_floater('upload urls')">
+		</div>
+		
+
+		<div id = "previewbay">
+		</div>
+
+		<div id = floater_holder>
+			<div id="upload files" class="control_floating">
+				<input type="button" value="close" onclick="close_floaters()">
+				<hr>
+				<div class = "helpbox">
+					somewhat memory intensive, may cause slowdown depending on image size. use SHIFT and CTRL to select multiple
+				</div>
+				<br>
+				<input type="file" id="fileinput" multiple accept="image/jpeg, image/png, image/jpg, image/gif">
+				<br>
+				<input type="button" value="load" onclick="loadfiles();close_floaters()">
+			</div>
+		
+			<div id="upload urls" class="control_floating">
+				<input type="button" value="close" onclick="close_floaters()">
+				<hr>
+				<div class = "helpbox">
+					you can load multiple URLs. just separate them by line
+				</div>
+				<br>
+				<textarea name="input_cardurl" id="input_cardurl" cols="30" rows="10" placeholder=
+"url
+url"
+				></textarea>
+				<br>
+				<input type="button" value="load" onclick="loadfrominput('input_cardurl');close_floaters()">
+			</div>
+		</div>
+
+		
+	</div>
+
+	
+</body>
+</html>
