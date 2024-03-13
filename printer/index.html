@@ -3,59 +3,128 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+	<title>CaRD20</title>
+
 	<link rel="stylesheet" href="data/style.css">
 	<script src="data/script.js" defer></script>
 </head>
 <body>
-	<div id="printbay"></div>
-	<div id="main">
-		<div id="controls">
-			<input type="button" value="print" onclick="printcards()">
-			<hr>
-			<input type="button" value="load from files" onclick="show_floater('upload files')">
-			<br>
-			<input type="button" value="load from URL" onclick="show_floater('upload urls')">
-			<hr>
-			<input type="button" value="save JSON" onclick="save_json()">
-		</div>
-		
+	<!-- ----------------------------------------------------------------------------------------------------
 
-		<div id = "previewbay">
-		</div>
-
-		<div id = floater_holder>
-			<div id="upload files" class="control_floating">
-				<input type="button" value="close" onclick="close_floaters()">
-				<hr>
-				<div class = "helpbox">
-					somewhat memory intensive, may cause slowdown depending on image size. use SHIFT and CTRL to select multiple
-				</div>
-				<br>
-				<input type="file" id="fileinput" multiple accept="image/jpeg, image/png, image/jpg, image/gif">
-				<br>
-				<input type="button" value="load" onclick="loadfiles();close_floaters()">
-			</div>
-		
-			<div id="upload urls" class="control_floating">
-				<input type="button" value="close" onclick="close_floaters()">
-				<hr>
-				<div class = "helpbox">
-					you can load multiple URLs. just separate them by line
-				</div>
-				<br>
-				<textarea name="input_cardurl" id="input_cardurl" cols="30" rows="10" placeholder=
-"url
-url"
-				></textarea>
-				<br>
-				<input type="button" value="load" onclick="loadfrominput('input_cardurl');close_floaters()">
-			</div>
-		</div>
-
-		
-	</div>
-
+		MAIN
 	
+	---------------------------------------------------------------------------------------------------- -->
+	<div id="main">
+		<div id="main_controls">
+			<input type="image" src="https://www.svgrepo.com/show/472775/print.svg" class="main_controls_button" value="print" onclick="menu_open('menu_print')" id="button_print">
+			<input type="image" src="https://www.svgrepo.com/show/501595/import-content.svg" class="main_controls_button" value="import" onclick="menu_open('menu_import')">
+			<!-- <input type="image" src="https://www.svgrepo.com/show/501557/export-content.svg" class="main_controls_button" value="export" onclick="menu_open('menu_export')"> -->
+
+			<input type="range" id="card_preview_scale_slider" value="3" min="1" max="8" oninput="update_card_preview_scale(this)" step="0.1">
+		</div>
+		<div id="main_previewbay">
+
+		</div>
+		<div id="main_cardlibrary">
+
+		</div>
+	</div>
+	<div id="menus"></div>
+
+
+	<!-- ----------------------------------------------------------------------------------------------------
+
+		TEMPLATES
+	
+	---------------------------------------------------------------------------------------------------- -->
+
+	<!-- --------------------------------------------------
+		MENU HOLDER
+	-------------------------------------------------- -->
+	<template id = "template_menu_holder">
+		<div class = "menu_holder" id = "slot_menu_holder">
+		</div>
+	</template>
+
+	<!-- --------------------------------------------------
+		MENU BASE
+	-------------------------------------------------- -->
+	<template id="template_menu_base">
+		<div class = "menu_base">
+			<div class="menu_header">
+				<input type="button" value="close" id="button_close" onclick="menu_close()">
+			</div>
+			<div class = "menu_main" id="slot_menu_main">
+			</div>
+		</div>
+	</template>
+
+	<!-- --------------------------------------------------
+		MENU IMPORT
+	-------------------------------------------------- -->
+	<template id="template_menu_import">
+		<input type="button" value="from urls" onclick="menu_open('menu_import_urls')">
+		<input type="button" value="from files" onclick="import_files()">
+		<!-- <input type="button" value="from json"> -->
+	</template>
+	<!-- --------------------------------------------------
+		MENU IMPORT URLS
+	-------------------------------------------------- -->
+	<template id="template_menu_import_urls">
+		<textarea id="input_card_urls" class="menu_textarea"></textarea>
+		<br>
+		<input type="button" value="load" onclick="import_files_url('input_card_urls')">
+	</template>
+	<!-- --------------------------------------------------
+		MENU IMPORT FILES
+	-------------------------------------------------- -->
+	<template id="template_menu_import_files">
+		<input type="file" name="cardimages" id="input_card_files" multiple accept="image/jpeg, image/png, image/jpg, image/gif">
+		<br>
+		<input type="button" value="load">
+	</template>
+	<!-- --------------------------------------------------
+		MENU EXPORT
+	-------------------------------------------------- -->
+	<template id="template_menu_export">
+		<input type="checkbox" id="onlyselected">
+		<label for="onlyselected">export only selected</label>
+		<hr>
+		<input type="button" value="export to json">
+	</template>
+	<!-- --------------------------------------------------
+		MENU PRINT
+	-------------------------------------------------- -->
+	<template id="template_menu_print">
+		<input type="checkbox" class="button_onlyselected">
+		<label for="onlyselected">print only selected</label>
+		<hr>
+		<input type="button" value="print" onclick="print_cards()">
+	</template>
+	<!-- --------------------------------------------------
+		MENU EXAMINE CARD
+	-------------------------------------------------- -->
+	<template id="template_menu_examine_card">
+		<img src="" alt="" class="menu_examine_card_image">
+	</template>
+	<!-- --------------------------------------------------
+		CARD HOLDER
+	-------------------------------------------------- -->
+	<template id="template_card_holder">
+		<div class="card_holder" id="card_holder">
+			<div class="card_holder_header">
+				<input type="image" src="https://www.svgrepo.com/show/5734/cross-gross-symbol.svg" class="card_button_delete">
+				<input type="number" class="input_card_count" id="card_count" value = "1">
+				<input type="checkbox" class="is_card_selected">
+			</div>
+			<img src="" class="card_preview" id="card_image" onclick="examine_card(this)">
+			<div class = card_holder_options>
+				
+			</div>
+		</div>
+	</template>
+
+
+
 </body>
 </html>
