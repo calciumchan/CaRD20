@@ -4,6 +4,10 @@
 	--previewbay-background-color:#555555;
 	--panel-background:#888888;
 	--menu-background:#444444cc;
+
+	--menu_holder-animation:menu_holder;
+	--menu_base_animation:menu_base;
+	--card_holder_animation:card_holder;
 }
 
 @page{
@@ -37,6 +41,13 @@
 	}
 }
 
+
+.quality_disable_animations{
+	--menu_holder-animation:none;
+	--menu_base_animation:none;
+	--card_holder_animation:none;
+}
+
 #main{
 	background-color: var(--background-color);
 	position: fixed;
@@ -59,12 +70,12 @@
 	background-color: var(--panel-background);
 	width: max-content;
 	padding: .5rem;
-	border-radius: .5rem;
-	margin: 8px;
+	width: 100%;
 	grid-area: controls;
 	box-shadow: 0px 0px 8px black;
 	display: flex;
 	align-items: center;
+	box-sizing: border-box;
 }
 
 #main_previewbay{
@@ -74,7 +85,7 @@
 	overflow-x: hidden;
 	grid-area: previewbay;
 	text-align: left;
-	margin: 8px;
+	margin: 16px;
 	box-shadow: inset 0px 0px 32px 8px black;
 	padding: 1rem;
 	border-radius: 1rem;
@@ -86,7 +97,7 @@
 #main_cardlibrary{
 	background-color: orange;
 	grid-area: library;
-	width: 2rem;
+	width: 0vw;
 }
 
 .menu_holder{
@@ -97,9 +108,6 @@
 	height: 100%;
 	display: grid;
 	place-content: center;
-
-	
-	
 }
 
 .menu_holder:last-of-type{
@@ -107,7 +115,7 @@
 }
 
 .menu_holder:first-of-type{
-	animation-name: menu_holder;
+	animation-name: var(--menu_holder-animation);
 	animation-duration: 2s;
 
 	background-image: linear-gradient(0deg, rgba(0,0,0,.75), transparent );
@@ -141,7 +149,7 @@
 }
 
 .menu_base{
-	animation-name: menu_base;
+	animation-name: var(--menu_base_animation);
 	animation-duration: .5s;
 
 	background-color: var(--menu-background);
@@ -203,6 +211,9 @@
 	box-shadow:
 		0px 0px 8px black
 	;
+
+	transition-duration: .25s;
+	transition-property: scale, box-shadow;
 }
 
 
@@ -211,7 +222,7 @@
 		scale:150%;
 		transform:
 			rotate(20deg)
-			translate(10vw, 10vh)
+			translate(100vw, 5vh)
 		;
 		opacity: 50%;
 	}
@@ -227,7 +238,7 @@
 }
 
 .card_preview:hover{
-	scale:1.025;
+	scale:1.05;
 	box-shadow: 0px 0px 16px white;
 }
 
@@ -244,7 +255,7 @@
 	;
 	float:left;
 	
-	animation-name: card_holder;
+	animation-name: var(--card_holder_animation);
 	animation-duration: .5s;
 	animation-iteration-count: 1;
 
@@ -252,6 +263,8 @@
 	margin: 4px;
 	
 	background-image: linear-gradient(45deg, transparent, rgba(255,255,255,0.75));
+
+
 }
 
 .card_holder_options{

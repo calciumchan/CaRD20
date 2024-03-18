@@ -18,7 +18,7 @@
 		<div id="main_controls">
 			<input type="image" src="https://www.svgrepo.com/show/472775/print.svg" class="main_controls_button" value="print" onclick="menu_open('menu_print')" id="button_print">
 			<input type="image" src="https://www.svgrepo.com/show/501595/import-content.svg" class="main_controls_button" value="import" onclick="menu_open('menu_import')">
-			<!-- <input type="image" src="https://www.svgrepo.com/show/501557/export-content.svg" class="main_controls_button" value="export" onclick="menu_open('menu_export')"> -->
+			<input type="image" src="https://www.svgrepo.com/show/501557/export-content.svg" class="main_controls_button" value="export" onclick="menu_open('menu_export')">
 
 			<input type="range" id="card_preview_scale_slider" value="3" min="1" max="8" oninput="update_card_preview_scale(this)" step="0.1">
 		</div>
@@ -65,7 +65,7 @@
 	<template id="template_menu_import">
 		<input type="button" value="from urls" onclick="menu_open('menu_import_urls')">
 		<input type="button" value="from files" onclick="import_files()">
-		<!-- <input type="button" value="from json"> -->
+		<input type="button" value="from json">
 	</template>
 	<!-- --------------------------------------------------
 		MENU IMPORT URLS
@@ -90,7 +90,7 @@
 		<input type="checkbox" id="onlyselected">
 		<label for="onlyselected">export only selected</label>
 		<hr>
-		<input type="button" value="export to json">
+		<input type="button" value="export to json" onclick="export_cards_json()">
 	</template>
 	<!-- --------------------------------------------------
 		MENU PRINT

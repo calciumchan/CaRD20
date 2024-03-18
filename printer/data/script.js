@@ -173,7 +173,7 @@ let card_list = [];
 
 let card_number = 0;
 
-function add_card(src){
+function add_card(src, count = 1){
 	//CREATE CARD HOLDER
 	let element = create_element_from_template("template_card_holder")
 
@@ -182,6 +182,9 @@ function add_card(src){
 
 	//GRAB THE CARD HOLDER
 	let holder = element.getElementById("card_holder");
+
+	//SET CARD COUNT
+	holder.getElementsByClassName("input_card_count")[0].value = count;
 
 	//SET ANIMATION SPEED
 	holder.style.animationDuration = (0.25 + (Math.random() * .5)) + "s";
@@ -257,6 +260,45 @@ function print_cards(){
 	//REMOVE PRINT BAY AND CLOSE MENUS
 	printbay.remove();
 	menu_close_all();
+}
+/*----------------------------------------------------------------------------------------------------
+
+	EXPORT CARD LIST
+
+----------------------------------------------------------------------------------------------------*/
+
+function export_cards_json(){
+
+	//add selection later
+	
+	let data = [];
+
+	for(let i = 0; i < card_list.length; i++){
+		let carddata = {}
+
+		//get quantity
+		carddata.count = card_list[i].getElementsByClassName("input_card_count")[0].value;
+
+		//get source
+		carddata.src = card_list[i].getElementsByClassName("card_preview")[0].src;
+
+		//push
+		data.push(carddata);
+	}
+
+	//download
+	download_file("cards.json",JSON.stringify(data),"text/plain");
+}
+
+function download_file(filename, data, contenttype){
+	let a = document.createElement("a");
+
+	let file = new Blob([data],{type:contenttype})
+	
+	a.href = URL.createObjectURL(file);
+	a.download = filename;
+	a.click();
+	a.remove();
 }
 
 /*----------------------------------------------------------------------------------------------------
