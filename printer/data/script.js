@@ -109,6 +109,26 @@ function menu_close_all(){
 
 /*----------------------------------------------------------------------------------------------------
 
+	SPECIAL GETTERS
+
+----------------------------------------------------------------------------------------------------*/
+
+function get_menu_value(elementclass, value = "value"){
+	return active_menus.at(-1).getElementsByClassName(elementclass)[0][value];
+}
+
+function get_card_value(number, elementclass, value = "value"){
+	let card = card_list[number];
+
+	return card.getElementsByClassName(elementclass)[0][value];
+}
+
+function get_card_image(number){
+	return card_list[number].getElementsByClassName("card_preview")[0];
+}
+
+/*----------------------------------------------------------------------------------------------------
+
 	IMPORTERS
 
 ----------------------------------------------------------------------------------------------------*/
@@ -232,12 +252,12 @@ function print_cards(){
 
 	//ADD CARDS TO PRINTBAY
 	for(let i = 0; i < card_list.length; i++){
-		let selected = card_list[i].getElementsByClassName("is_card_selected")[0].checked;
+		let selected = get_card_value(i,"is_card_selected","checked")
 
 		if(onlyselected == false || selected == true){
-			let card = card_list[i].getElementsByClassName("card_preview")[0];
+			let card = get_card_image(i);//card_list[i].getElementsByClassName("card_preview")[0];
 
-			let amount = card_list[i].getElementsByClassName("input_card_count")[0].value;
+			let amount = get_card_value(i,"input_card_count")
 
 			for(let j = 0; j < amount; j++){
 				let clone = card.cloneNode(true);
@@ -268,26 +288,42 @@ function print_cards(){
 ----------------------------------------------------------------------------------------------------*/
 
 function export_cards_json(){
+	//CHECK IF THERE ARE EVEN CARDS
+	if(card_list.length <= 0){
+		return null;
+	}
 
-	//add selection later
-	
+	//CREATE RETURN DATA
 	let data = [];
 
+	//CHECK IF ONLY SELECTED
+	let onlyselected = false;
+	onlyselected = get_menu_value("button_onlyselected","checked");//active_menus.at(-1).getElementsByClassName("button_onlyselected")[0].checked;
+
+
 	for(let i = 0; i < card_list.length; i++){
-		let carddata = {}
 
-		//get quantity
-		carddata.count = card_list[i].getElementsByClassName("input_card_count")[0].value;
+		let selected = get_card_value(i,"is_card_selected","checked");//card_list[i].getElementsByClassName("is_card_selected")[0].checked;
 
-		//get source
-		carddata.src = card_list[i].getElementsByClassName("card_preview")[0].src;
+		if(onlyselected == false || selected == true){
+			let carddata = {}
 
-		//push
-		data.push(carddata);
+			//get quantity
+			carddata.count = get_card_value(i,"input_card_count");
+	
+			//get source
+			carddata.src = get_card_image(i).src;
+	
+			//push
+			data.push(carddata);
+		}
 	}
 
 	//download
-	download_file("cards.json",JSON.stringify(data),"text/plain");
+	download_file("cards.json",JSON.stringify(data,undefined,2),"text/plain");
+
+	//close menus
+	menu_close_all();
 }
 
 function download_file(filename, data, contenttype){
@@ -306,6 +342,9 @@ function download_file(filename, data, contenttype){
 	CONNECTION DATA
 
 ----------------------------------------------------------------------------------------------------*/
+
+//i think i have a better way of doing this dumb bullshit.
+//this will probably be removed later because its kind of just taking up space for no real reason
 
 const templatedata = {
 	menu_holder:{

@@ -7,6 +7,7 @@
 
 	<link rel="stylesheet" href="data/style.css">
 	<script src="data/script.js" defer></script>
+	<script src="data/decklist.js"></script>
 </head>
 <body>
 	<!-- ----------------------------------------------------------------------------------------------------
@@ -87,7 +88,7 @@
 		MENU EXPORT
 	-------------------------------------------------- -->
 	<template id="template_menu_export">
-		<input type="checkbox" id="onlyselected">
+		<input type="checkbox" id="onlyselected" class="button_onlyselected">
 		<label for="onlyselected">export only selected</label>
 		<hr>
 		<input type="button" value="export to json" onclick="export_cards_json()">
