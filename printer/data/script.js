@@ -11,10 +11,6 @@ function create_element_from_template(id){
 	return template.content.cloneNode(true);
 }
 
-//const ele = create_element_from_template("template_menu_base");
-
-//document.body.appendChild(ele);
-
 function construct_template(id){
 	let data = templatedata[id];
 
@@ -272,6 +268,9 @@ function add_card(src, count = 1){
 
 	document.getElementById("main_previewbay").appendChild(element);
 	update_card_preview_scale(document.getElementById("card_preview_scale_slider"));
+
+	//UPDATE CARD COUNT
+	update_card_count();
 }
 
 function remove_card(id){
@@ -284,6 +283,9 @@ function remove_card(id){
 
 	//REMOVE FROM DOM
 	document.getElementById(id).remove();
+
+	//UPDATE COUNTS
+	update_card_count();
 }
 
 /*----------------------------------------------------------------------------------------------------
@@ -369,13 +371,13 @@ function export_cards_json(){
 	}
 
 	//download
-	download_file("cards.json",JSON.stringify(data,undefined,2),"text/plain");
+	user_download_file("cards.json",JSON.stringify(data,undefined,2),"text/plain");
 
 	//close menus
 	menu_close_all();
 }
 
-function download_file(filename, data, contenttype){
+function user_download_file(filename, data, contenttype){
 	let a = document.createElement("a");
 
 	let file = new Blob([data],{type:contenttype})
@@ -453,6 +455,45 @@ const templatedata = {
 			id:"menu_base",
 			addto:"slot_menu_main"
 		}
+	}
+}
+
+/*----------------------------------------------------------------------------------------------------
+
+	INFO TAB
+
+----------------------------------------------------------------------------------------------------*/
+
+function update_card_count(){
+	let count = 0;
+	let selected = 0
+
+	//GO THROUGH AND ADD UP ALL THE CARD COUNTS
+	for(let i = 0; i < card_list.length; i++){
+		count += parseInt(get_card_value(i,"input_card_count"));
+		if(get_card_value(i,"is_card_selected","checked")){
+			selected ++;
+		}
+	}
+
+	//UPDATE COUNTS
+	if(count > 0){
+		document.getElementById("info_card_count").style.display = "inline-block"
+		document.getElementById("info_page_count").style.display = "inline-block"
+
+		document.getElementById("info_card_count").innerHTML = count + " cards";
+		document.getElementById("info_page_count").innerHTML = Math.ceil(count/9) + " pages";
+	}else{
+		document.getElementById("info_card_count").style.display = "none"
+		document.getElementById("info_page_count").style.display = "none"
+	}
+
+	if(selected > 0){
+		document.getElementById("info_selection_count").style.display = "inline-block"
+
+		document.getElementById("info_selection_count").innerHTML = selected + " selected";
+	}else{
+		document.getElementById("info_selection_count").style.display = "none"
 	}
 }
 

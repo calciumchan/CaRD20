@@ -25,20 +25,6 @@
 	#printbay, .printcard{
 		visibility: visible;
 	}
-
-
-
-	-----------------------------------------------IDK_IF_I_NEED_THESE{color:red;}
-
-	.pagebreak {
-		page-break-after: always;
-		clear: both;
-	}
-	.pagebreak::after{
-		content:"";
-		clear: both;
-		display: table;
-	}
 }
 
 
@@ -60,10 +46,11 @@
 	display: grid;
 	grid-template-areas:
 		"library controls"
-		"library previewbay"
+		"library info"
+		"library previewbay "
 	;
 	grid-template-columns: max-content auto;
-	grid-template-rows: max-content auto;
+	grid-template-rows: max-content max-content auto;
 }
 
 #main_controls{
@@ -76,6 +63,7 @@
 	display: flex;
 	align-items: center;
 	box-sizing: border-box;
+	flex-wrap: wrap;
 }
 
 #main_previewbay{
@@ -92,12 +80,40 @@
 	background-image: 
 		radial-gradient(rgba(255,255,255,0.25),transparent)
 	;
+
 }
 
 #main_cardlibrary{
 	background-color: orange;
 	grid-area: library;
 	width: 0vw;
+	transition-duration: .5s;
+	transition-property: width;
+	transition-timing-function: ease;
+}
+
+#main_cardlibrary:hover{
+	width: 80vw;
+}
+
+#main_info{
+	background-color: var(--panel-background);
+	background-image: linear-gradient(180deg, rgba(0,0,0,0.25), transparent);
+	width: 100%;
+	height: max-content;
+	grid-area: info;
+	word-wrap: break-word;
+
+	display: flex;
+	justify-content: left;
+}
+
+.info_box{
+	display: none;
+	background-color: rgba(255,255,255,0.25);
+	padding: 4px;
+	border-radius: 4px;
+	margin: 2px;
 }
 
 .menu_holder{
@@ -323,8 +339,8 @@ label{
 
 
 .printcard{
-	width: 3.5in;
-	height: 5in;
+	width: 2.5in;
+	height: 3.5in;
 	background-color: white;
 	border-style: dotted;
 	border-color: rgba(0,0,0,0.25);
