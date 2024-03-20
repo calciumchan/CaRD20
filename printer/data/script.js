@@ -132,42 +132,30 @@ function get_card_image(number){
 	IMPORTERS
 
 ----------------------------------------------------------------------------------------------------*/
-function import_files(){
-	//CREATE INPUT
-	let input = document.createElement("input");
-	input.type = "file";
-	input.multiple = true;
-	input.accept = "image/jpeg, image/png, image/jpg, image/gif";
 
-	input.onchange = e => import_files_after(e);
-
-
-	input.click();
-
-	
-}
-
-function import_files_after(e){
-
+function parse_card_images(e){
 	//LOOP THROUGH FILES
 	for(let i = 0; i < e.target.files.length; i++){
-		var fr = new FileReader(); 
-		fr.readAsDataURL(e.target.files[i]);
-		fr.addEventListener("load",function(){
-			add_card(this.result);
-		})
+		//SEND TO PREVIEWBAY
+		read_file_data(e.target.files[i],onload_cardimage);
 	}
-
-	//CLEAR MEMORY ?
-	e.target.remove();
 
 	//close menus
 	if(e.target.files.length > 0){
 		menu_close_all();
 	}
+
+	//CLEAR MEMORY ?
+	e.target.remove();
+}
+
+function onload_cardimage(){
+	//CALLED BY THE FILE READER TO LOAD THE CARD DATA INTO CARD PREVIEWS
+	add_card(this.result);
 }
 
 function import_files_url(elementid){
+	//THIS SERIOUSLY NEEDS TO BE REPLACED WITH THE MENU GETTER FUNCTION I MADE THE OTHER DAY FRFR
 	let text = document.getElementById(elementid).value;
 
 	if(text != undefined){
@@ -181,6 +169,67 @@ function import_files_url(elementid){
 	}
 
 	menu_close_all();
+}
+
+function parse_card_json(e){
+	console.log(e.target.files[0]);
+	//LOOP THROUGH FILES
+	for(let i = 0; i < e.target.files.length; i++){
+		read_file_text(e.target.files[i], import_from_json)
+	}
+
+	//CLOSE MENUS
+	if(e.target.files.length > 0){
+		menu_close_all();
+	}
+}
+
+function import_from_json(){
+	let data = JSON.parse(this.result);
+	for(let i = 0; i < data.length; i++){
+		add_card(data[i].src,data[i].count);
+	}
+}
+
+/*----------------------------------------------------------------------------------------------------
+
+	FILE READER
+
+----------------------------------------------------------------------------------------------------*/
+
+function user_load_files(functioncatch, multiple = false, accept = "image/jpeg, image/png, image/jpg, image/gif"){
+	//ASKS FOR FILE INPUT FROM USER
+
+	//CREATE INPUT
+	let input = document.createElement("input");
+	input.type = "file";
+
+	//SET FLAGS
+	input.multiple = multiple;
+	input.accept = accept;
+
+	//SET AFTER FUNCTION
+	input.onchange = e => window[functioncatch](e);//import_files_after(e)
+
+	//SEND IT
+	input.click();
+
+	//CLEAR MEMORY?
+	input.remove();
+}
+
+function read_file_data(data, onload){
+	//READS DATA AND SENDS IT TO A FUNCTION
+	var fr = new FileReader();
+	fr.onload = onload;
+	fr.readAsDataURL(data);
+}
+
+function read_file_text(data, onload){
+	//READS DATA AS TEXT AND SENDS IT TO ONLOAD FUNCTION
+	var fr = new FileReader();
+	fr.onload = onload;
+	fr.readAsText(data);
 }
 
 /*----------------------------------------------------------------------------------------------------
@@ -248,14 +297,14 @@ function print_cards(){
 	let printbay = document.createElement("div");
 	printbay.id = "printbay";
 	let onlyselected = false;
-	onlyselected = active_menus.at(-1).getElementsByClassName("button_onlyselected")[0].checked;
+	onlyselected = get_menu_value("button_onlyselected","checked");
 
 	//ADD CARDS TO PRINTBAY
 	for(let i = 0; i < card_list.length; i++){
 		let selected = get_card_value(i,"is_card_selected","checked")
 
 		if(onlyselected == false || selected == true){
-			let card = get_card_image(i);//card_list[i].getElementsByClassName("card_preview")[0];
+			let card = get_card_image(i);
 
 			let amount = get_card_value(i,"input_card_count")
 
@@ -298,12 +347,12 @@ function export_cards_json(){
 
 	//CHECK IF ONLY SELECTED
 	let onlyselected = false;
-	onlyselected = get_menu_value("button_onlyselected","checked");//active_menus.at(-1).getElementsByClassName("button_onlyselected")[0].checked;
+	onlyselected = get_menu_value("button_onlyselected","checked");
 
 
 	for(let i = 0; i < card_list.length; i++){
 
-		let selected = get_card_value(i,"is_card_selected","checked");//card_list[i].getElementsByClassName("is_card_selected")[0].checked;
+		let selected = get_card_value(i,"is_card_selected","checked");
 
 		if(onlyselected == false || selected == true){
 			let carddata = {}

@@ -65,8 +65,8 @@
 	-------------------------------------------------- -->
 	<template id="template_menu_import">
 		<input type="button" value="from urls" onclick="menu_open('menu_import_urls')">
-		<input type="button" value="from files" onclick="import_files()">
-		<input type="button" value="from json">
+		<input type="button" value="from files" onclick="user_load_files('parse_card_images',true,'image/jpeg, image/png, image/jpg, image/gif');">
+		<input type="button" value="from json" onclick="user_load_files('parse_card_json',true,'.json');">
 	</template>
 	<!-- --------------------------------------------------
 		MENU IMPORT URLS
@@ -78,12 +78,12 @@
 	</template>
 	<!-- --------------------------------------------------
 		MENU IMPORT FILES
-	-------------------------------------------------- -->
 	<template id="template_menu_import_files">
 		<input type="file" name="cardimages" id="input_card_files" multiple accept="image/jpeg, image/png, image/jpg, image/gif">
 		<br>
 		<input type="button" value="load">
 	</template>
+	-------------------------------------------------- -->
 	<!-- --------------------------------------------------
 		MENU EXPORT
 	-------------------------------------------------- -->
